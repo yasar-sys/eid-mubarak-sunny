@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import CrescentMoon from "@/components/CrescentMoon";
 import SceneButton from "@/components/SceneButton";
 import AnimatedClouds from "@/components/AnimatedClouds";
-import MosqueSilhouette from "@/components/MosqueSilhouette";
 
 /** Scene 1: Night sky with crescent moon and opening text */
 const LandingScene = ({ onNext }: { onNext: () => void }) => {
@@ -15,7 +14,7 @@ const LandingScene = ({ onNext }: { onNext: () => void }) => {
       {/* Cloud Reveal Transition */}
       <AnimatedClouds />
 
-      <div className="relative z-10 flex flex-col items-center justify-center flex-grow pt-16">
+      <div className="relative z-10 flex flex-col items-center justify-center flex-grow pt-16 pb-32 md:pb-48">
         {/* Radial glow behind moon */}
         <motion.div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
@@ -32,7 +31,7 @@ const LandingScene = ({ onNext }: { onNext: () => void }) => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 2, delay: 2.5, ease: "easeOut" }}
-          className="mb-8"
+          className="mb-8 mt-12"
         >
           <CrescentMoon className="w-32 h-32 md:w-44 md:h-44" />
         </motion.div>
@@ -59,7 +58,7 @@ const LandingScene = ({ onNext }: { onNext: () => void }) => {
 
         {/* Subtitle */}
         <motion.p
-          className="font-body text-lg md:text-2xl text-muted-foreground/90 text-center mb-8 max-w-lg"
+          className="font-body text-lg md:text-2xl text-muted-foreground/90 text-center mb-10 max-w-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 4.8, duration: 1 }}
@@ -67,25 +66,14 @@ const LandingScene = ({ onNext }: { onNext: () => void }) => {
           May the divine blessings of Allah bring you hope, faith, and joy on Eid and forever.
         </motion.p>
 
-        {/* Decorative line */}
-        <motion.div
-          className="w-48 h-px bg-gradient-to-r from-transparent via-gold to-transparent mb-10"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.5, delay: 5.5 }}
-        />
-
         {/* CTA Button */}
         <SceneButton onClick={onNext} delay={6}>
           Begin the Celebration ✦
         </SceneButton>
       </div>
 
-      {/* Mosque Horizon */}
-      <MosqueSilhouette className="absolute bottom-0 left-0 w-full h-[30vh] md:h-[40vh] pointer-events-none z-0 opacity-80" />
-      
-      {/* Dark gradient overlay to blend Mosque base into screen bottom */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-night-deep to-transparent pointer-events-none z-10" />
+      {/* Dark gradient overlay to blend image base gently if needed */}
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-night-deep to-transparent pointer-events-none z-10" />
     </motion.div>
   );
 };

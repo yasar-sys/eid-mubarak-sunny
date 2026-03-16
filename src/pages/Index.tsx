@@ -23,7 +23,13 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen gradient-night overflow-hidden">
+    <div 
+      className="relative min-h-screen overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/bg-mosque.png')" }}
+    >
+      {/* Background dark overlay for better text contrast if needed */}
+      <div className="absolute inset-0 bg-night-deep/40 pointer-events-none mix-blend-multiply" />
+
       {/* Background effects */}
       <StarField />
       <FloatingParticles count={15} />
