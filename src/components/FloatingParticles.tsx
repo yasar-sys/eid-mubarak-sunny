@@ -2,7 +2,13 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 
 /** Floating golden particles that drift upward — adds depth to scenes */
-const FloatingParticles = ({ count = 20 }: { count?: number }) => {
+const FloatingParticles = ({ 
+  count = 20,
+  color 
+}: { 
+  count?: number;
+  color?: string;
+}) => {
   const particles = useMemo(() =>
     Array.from({ length: count }, (_, i) => {
       const colors = ["#FACC15", "#38BDF8", "#F472B6", "#A78BFA", "#4ADE80"]; // gold, sky, pink, purple, green
@@ -13,10 +19,10 @@ const FloatingParticles = ({ count = 20 }: { count?: number }) => {
         duration: Math.random() * 8 + 6,
         delay: Math.random() * 5,
         opacity: Math.random() * 0.4 + 0.3,
-        color: colors[Math.floor(Math.random() * colors.length)]
+        color: color || colors[Math.floor(Math.random() * colors.length)]
       };
     }),
-    [count]
+    [count, color]
   );
 
   return (

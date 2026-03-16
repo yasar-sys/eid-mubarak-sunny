@@ -61,6 +61,11 @@
     --sidebar-accent-foreground: 45 60% 95%;
     --sidebar-border: 220 30% 12%;
     --sidebar-ring: 43 80% 55%;
+
+    /* Royal Thesis Theme */
+    --royal-teal: 180 100% 12%;
+    --royal-teal-light: 180 60% 25%;
+    --gold-foil: 43 70% 50%;
   }
 }
 
@@ -120,6 +125,21 @@
 
   .font-body {
     font-family: var(--font-body);
+  }
+
+  .bg-royal-teal {
+    background: radial-gradient(circle at center, hsl(var(--royal-teal-light)), hsl(var(--royal-teal)));
+  }
+
+  .box-glow-royal {
+    box-shadow: 0 0 40px hsl(var(--royal-teal-light) / 0.3), 0 0 80px hsl(var(--royal-teal) / 0.2);
+  }
+
+  .gold-foil-text {
+    background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
