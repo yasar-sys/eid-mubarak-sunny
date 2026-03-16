@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
+import ShareModal from "@/components/ShareModal";
 
 const Scene5Final = () => {
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
-  const fullMessage = "May this Eid bring peace to your heart, \njoy to your home, \nand blessings to your life.\n\nEid Mubarak.";
+  const fullMessage = "May the celestial blessings of this holy day \nilluminate your path with peace, \njoy, and eternal prosperity.\n\nEid Mubarak.";
 
   // Typing effect
   useEffect(() => {
@@ -15,7 +17,7 @@ const Scene5Final = () => {
       if (index > fullMessage.length) {
         clearInterval(timer);
         // Fire confetti when done typing
-        const duration = 3 * 1000;
+        const duration = 2.5 * 1000;
         const animationEnd = Date.now() + duration;
         const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100, colors: ['#fbbf24', '#fcd34d', '#ffffff'] };
 
@@ -24,9 +26,9 @@ const Scene5Final = () => {
           if (timeLeft <= 0) return clearInterval(interval);
           const particleCount = 20 * (timeLeft / duration);
           confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-        }, 250);
+        }, 200);
       }
-    }, 60);
+    }, 45); // Faster typing
 
     return () => clearInterval(timer);
   }, []);
@@ -36,18 +38,18 @@ const Scene5Final = () => {
       className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 md:px-6 overflow-hidden bg-night-deep"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.5 }}
+      transition={{ duration: 1.2 }}
     >
       <motion.div
         className="relative z-20 w-full max-w-2xl bg-night-mid/80 backdrop-blur-xl border border-gold/30 rounded-2xl shadow-[0_0_50px_rgba(250,204,21,0.05)] p-8 md:p-16 flex flex-col items-center text-center overflow-hidden"
-        initial={{ y: 50, opacity: 0 }}
+        initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 1, ease: "easeOut" }}
+        transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
       >
         {/* Subtle decorative glow in card */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-b from-gold/5 to-transparent pointer-events-none" />
 
-        <div className="font-body text-xl md:text-3xl text-foreground leading-relaxed whitespace-pre-wrap flex-grow min-h-[250px] flex items-center">
+        <div className="font-display text-2xl md:text-4xl text-foreground font-serif leading-relaxed whitespace-pre-wrap flex-grow min-h-[200px] flex items-center" style={{ fontFamily: "'Cinzel', serif" }}>
           {typedMessage}
           <motion.span
             initial={{ opacity: 0 }}
@@ -62,26 +64,18 @@ const Scene5Final = () => {
           className="mt-12 w-full flex justify-center gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4 }}
+          transition={{ delay: 3.5 }}
         >
           <button
-            onClick={() => {
-              if (navigator.share) {
-                navigator.share({
-                  title: 'Eid Mubarak Cinematic Greeting',
-                  url: window.location.href,
-                });
-              } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard!");
-              }
-            }}
-            className="px-6 py-3 rounded-full border border-gold/40 text-gold-light text-sm tracking-widest uppercase hover:bg-gold hover:text-night transition-colors duration-300 shadow-[0_0_10px_rgba(250,204,21,0.1)] hover:shadow-[0_0_20px_rgba(250,204,21,0.3)]"
+            onClick={() => setIsShareOpen(true)}
+            className="px-8 py-4 rounded-full border border-gold/40 text-gold-light text-sm tracking-widest uppercase hover:bg-gold hover:text-night transition-all duration-300 shadow-[0_0_15px_rgba(250,204,21,0.1)] hover:shadow-[0_0_25px_rgba(250,204,21,0.4)] cursor-pointer"
           >
-            Share Card
+            Share Card ✦
           </button>
         </motion.div>
       </motion.div>
+
+      <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
 
       {/* Footer Title */}
       <motion.div

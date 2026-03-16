@@ -39,9 +39,9 @@ const Scene4Celebration = ({ onNext }: { onNext: () => void }) => {
         {/* Main interactive text */}
         <motion.h1
           className="font-display text-6xl md:text-8xl lg:text-9xl font-bold text-gold text-center leading-tight drop-shadow-2xl text-glow-gold mb-2 transition-transform hover:scale-105"
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, delay: 0.5, type: "spring" }}
+          transition={{ duration: 1.5, delay: 0.2, type: "spring" }}
         >
           Eid Mubarak
         </motion.h1>
@@ -50,29 +50,31 @@ const Scene4Celebration = ({ onNext }: { onNext: () => void }) => {
           className="font-body text-sm md:text-base text-gold-light/60 tracking-widest uppercase mt-4 mb-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.5 }}
+          transition={{ delay: 1.2 }}
         >
           ✦ tap the sky for a surprise ✦
         </motion.p>
 
         {/* Advance Button */}
         <div className="mt-8 z-30 relative" onClick={(e) => e.stopPropagation()}>
-          <SceneButton onClick={onNext} delay={4}>
+          <SceneButton onClick={onNext} delay={1.8}>
             Read the Greeting ✦
           </SceneButton>
         </div>
       </div>
 
-      {/* Mosque Silhouette moving into sharper focus and glowing */}
+      {/* Real Mosque Image Background - Subtle zoom effect */}
       <motion.div
-        className="absolute bottom-0 left-0 w-full h-[40vh] pointer-events-none z-10 opacity-70"
-        initial={{ opacity: 0.3 }}
-        animate={{ opacity: 0.7 }}
-        transition={{ duration: 2 }}
+        className="absolute inset-0 pointer-events-none z-10"
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.4 }}
+        transition={{ duration: 10, ease: "easeOut" }}
       >
-        {/* Glow behind mosque */}
-        <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-gold/10 to-transparent" />
-        <MosqueSilhouette />
+        <div 
+          className="w-full h-full bg-cover bg-center"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=2000')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-night-deep via-transparent to-transparent" />
       </motion.div>
 
       {/* Click Fireworks */}
