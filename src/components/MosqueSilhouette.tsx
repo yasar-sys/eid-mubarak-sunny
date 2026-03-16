@@ -1,19 +1,20 @@
 import { motion } from "framer-motion";
 
-/** Mosque silhouette SVG for the celebration scene */
+/** Mosque silhouette SVG for horizons */
 const MosqueSilhouette = ({ className = "" }: { className?: string }) => {
   return (
     <motion.div
       className={className}
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
+      transition={{ duration: 2.5, delay: 3, ease: "easeOut" }}
     >
-      <svg viewBox="0 0 800 300" className="w-full h-full">
+      <svg viewBox="0 0 800 300" className="w-full h-full object-cover object-bottom" preserveAspectRatio="xMidYMax slice">
         <defs>
           <linearGradient id="mosqueGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="hsl(225, 35%, 15%)" />
-            <stop offset="100%" stopColor="hsl(225, 40%, 8%)" />
+            <stop offset="0%" stopColor="hsl(260, 35%, 15%)" />
+            <stop offset="80%" stopColor="hsl(260, 40%, 8%)" />
+            <stop offset="100%" stopColor="hsl(250, 45%, 8%)" />
           </linearGradient>
         </defs>
 
@@ -34,8 +35,8 @@ const MosqueSilhouette = ({ className = "" }: { className?: string }) => {
         <circle cx="400" cy="75" r="8" fill="hsl(43, 80%, 55%)" opacity="0.9" />
 
         {/* Small domes */}
-        <path d="M280 300 L280 200 Q320 160 360 200 L360 300 Z" fill="url(#mosqueGrad)" opacity="0.8" />
-        <path d="M440 300 L440 200 Q480 160 520 200 L520 300 Z" fill="url(#mosqueGrad)" opacity="0.8" />
+        <path d="M280 300 L280 200 Q320 160 360 200 L360 300 Z" fill="url(#mosqueGrad)" opacity="0.9" />
+        <path d="M440 300 L440 200 Q480 160 520 200 L520 300 Z" fill="url(#mosqueGrad)" opacity="0.9" />
 
         {/* Windows */}
         <ellipse cx="400" cy="220" rx="15" ry="25" fill="hsl(43, 80%, 55%)" opacity="0.15" />
@@ -43,7 +44,7 @@ const MosqueSilhouette = ({ className = "" }: { className?: string }) => {
         <ellipse cx="480" cy="240" rx="8" ry="14" fill="hsl(43, 80%, 55%)" opacity="0.1" />
 
         {/* Base */}
-        <rect x="200" y="290" width="400" height="10" fill="url(#mosqueGrad)" />
+        <rect x="150" y="290" width="500" height="10" fill="url(#mosqueGrad)" />
       </svg>
     </motion.div>
   );
