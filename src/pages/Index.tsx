@@ -9,6 +9,7 @@ import Scene2Envelope from "@/components/scenes/Scene2Envelope";
 import Scene3Opening from "@/components/scenes/Scene3Opening";
 import Scene4Celebration from "@/components/scenes/Scene4Celebration";
 import Scene5Final from "@/components/scenes/Scene5Final";
+import GoldenMagicTrail from "@/components/GoldenMagicTrail";
 
 const Index = () => {
   const [scene, setScene] = useState(0);
@@ -37,6 +38,9 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-night-deep">
+      {/* Interactive Golden Cursor Trail */}
+      <GoldenMagicTrail />
+
       {/* Global Background Particles for 2nd-5th scenes; Scene 1 hides this via opacity */}
       {scene > 0 && (
         <motion.div
