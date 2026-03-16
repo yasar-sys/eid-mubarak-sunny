@@ -63,18 +63,18 @@ const Scene4Celebration = ({ onNext }: { onNext: () => void }) => {
         </div>
       </div>
 
-      {/* Real Mosque Image Background - Subtle zoom effect */}
+      {/* Mosque Prayer Scene Background - Serene spiritual ambiance */}
       <motion.div
         className="absolute inset-0 pointer-events-none z-10"
-        initial={{ scale: 1.1, opacity: 0 }}
-        animate={{ scale: 1, opacity: 0.4 }}
-        transition={{ duration: 10, ease: "easeOut" }}
+        initial={{ scale: 1.05, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.5 }}
+        transition={{ duration: 8, ease: "easeOut" }}
       >
         <div 
           className="w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=2000')" }}
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1590076175510-9118b813739a?auto=format&fit=crop&q=80&w=2000')" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-night-deep via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-night-deep via-night-deep/20 to-transparent" />
       </motion.div>
 
       {/* Click Fireworks */}
