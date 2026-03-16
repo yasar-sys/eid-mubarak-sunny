@@ -3,93 +3,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 
 /**
- * Ambient audio player using Web Audio API
- * Generates a soft, warm ambient drone — no external files needed
+ * Audio player using an HTML5 Audio element
  */
 const AudioToggle = () => {
   const [playing, setPlaying] = useState(false);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const nodesRef = useRef<{ gains: GainNode[]; oscs: OscillatorNode[] } | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const startAudio = useCallback(() => {
-    const ctx = new AudioContext();
-    audioCtxRef.current = ctx;
+  useEffect(() => {
+    // Initialize audio element
+    const audio = new Audio("/song.webm");
+    audio.loop = true;
+    audio.volume = 0.5; // Set an appropriate default volume
+    audioRef.current = audio;
 
-    const masterGain = ctx.createGain();
-    masterGain.gain.value = 0;
-    masterGain.connect(ctx.destination);
-
-    // Fade in
-    masterGain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 2);
-
-    const oscs: OscillatorNode[] = [];
-    const gains: GainNode[] = [];
-
-    // Warm ambient chord: D2, A2, D3, F#3, A3
-    const frequencies = [73.42, 110, 146.83, 185, 220];
-    const volumes = [0.15, 0.12, 0.1, 0.08, 0.06];
-
-    frequencies.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = "sine";
-      osc.frequency.value = freq;
-      gain.gain.value = volumes[i];
-
-      // Gentle vibrato
-      const lfo = ctx.createOscillator();
-      const lfoGain = ctx.createGain();
-      lfo.frequency.value = 0.3 + Math.random() * 0.4;
-      lfoGain.gain.value = freq * 0.003;
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency);
-      lfo.start();
-
-      osc.connect(gain);
-      gain.connect(masterGain);
-      osc.start();
-
-      oscs.push(osc);
-      gains.push(gain);
-    });
-
-    gains.push(masterGain);
-    nodesRef.current = { gains, oscs };
-  }, []);
-
-  const stopAudio = useCallback(() => {
-    const ctx = audioCtxRef.current;
-    const nodes = nodesRef.current;
-    if (ctx && nodes) {
-      const masterGain = nodes.gains[nodes.gains.length - 1];
-      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1);
-      setTimeout(() => {
-        nodes.oscs.forEach((o) => { try { o.stop(); } catch {} });
-        ctx.close();
-        audioCtxRef.current = null;
-        nodesRef.current = null;
-      }, 1200);
-    }
+    return () => {
+      audio.pause();
+      audio.src = "";
+    };
   }, []);
 
   const toggle = useCallback(() => {
+    if (!audioRef.current) return;
+
     if (playing) {
-      stopAudio();
+      audioRef.current.pause();
     } else {
-      startAudio();
+      audioRef.current.play().catch((err) => {
+        console.error("Audio playback failed:", err);
+      });
     }
     setPlaying(!playing);
-  }, [playing, startAudio, stopAudio]);
-
-  useEffect(() => {
-    return () => {
-      if (audioCtxRef.current) {
-        nodesRef.current?.oscs.forEach((o) => { try { o.stop(); } catch {} });
-        audioCtxRef.current.close();
-      }
-    };
-  }, []);
+  }, [playing]);
 
   return (
     <motion.button
@@ -100,7 +44,7 @@ const AudioToggle = () => {
       transition={{ delay: 1, type: "spring" }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      aria-label={playing ? "Mute ambient sound" : "Play ambient sound"}
+      aria-label={playing ? "Mute song" : "Play song"}
     >
       <AnimatePresence mode="wait">
         {playing ? (

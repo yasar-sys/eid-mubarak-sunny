@@ -4,6 +4,7 @@ import StarField from "@/components/StarField";
 import FloatingParticles from "@/components/FloatingParticles";
 import ShootingStars from "@/components/ShootingStars";
 import AudioToggle from "@/components/AudioToggle";
+import AwardBadge from "@/components/AwardBadge";
 import ShareModal from "@/components/ShareModal";
 import LandingScene from "@/components/scenes/LandingScene";
 import LanternScene from "@/components/scenes/LanternScene";
@@ -28,6 +29,9 @@ const Index = () => {
       <StarField />
       <FloatingParticles count={15} />
       <ShootingStars />
+
+      {/* Award Badge */}
+      <AwardBadge />
 
       {/* Audio toggle */}
       <AudioToggle />
