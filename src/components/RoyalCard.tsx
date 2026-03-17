@@ -1,143 +1,230 @@
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useState } from "react";
+import { CardData, CardTemplate } from "@/components/scenes/Scene0Setup";
 
-const RoyalCard = ({ onReveal }: { onReveal: () => void }) => {
+/* ─── Per-template visual configs ─── */
+const THEMES: Record<CardTemplate, {
+  bg: string; border: string; accent: string; accentLight: string; accentFoil: string;
+  textDark: string; backBg: string; sealColor: string; pattern: string;
+}> = {
+  royal: {
+    bg: "linear-gradient(145deg, #003d3d 0%, #005555 45%, #003030 100%)",
+    border: "#c8a84b",
+    accent: "#d4af37",
+    accentLight: "#f0cc66",
+    accentFoil: "linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c)",
+    textDark: "#003030",
+    backBg: "linear-gradient(145deg, #fdfaf0 0%, #f5edd8 100%)",
+    sealColor: "#8b1a1a",
+    pattern: "rgba(212,175,55,0.08)",
+  },
+  midnight: {
+    bg: "linear-gradient(145deg, #080320 0%, #150b45 50%, #06021a 100%)",
+    border: "#8090bb",
+    accent: "#aab8d8",
+    accentLight: "#ccd8f0",
+    accentFoil: "linear-gradient(to right, #a0a8c0, #e8ecf8, #8890b0, #e0e8f8, #90a0c8)",
+    textDark: "#06021a",
+    backBg: "linear-gradient(145deg, #f0f4ff 0%, #e0e8f8 100%)",
+    sealColor: "#2c1a6e",
+    pattern: "rgba(160,176,216,0.07)",
+  },
+  ivory: {
+    bg: "linear-gradient(145deg, #f8f0e0 0%, #f4e4c8 50%, #ecdcc0 100%)",
+    border: "#a06840",
+    accent: "#b07848",
+    accentLight: "#d09060",
+    accentFoil: "linear-gradient(to right, #8b5a2b, #d4956a, #8b4513, #c87941, #7a3e1a)",
+    textDark: "#3a1e0a",
+    backBg: "linear-gradient(145deg, #fff8ee 0%, #f5ead8 100%)",
+    sealColor: "#5c2c0a",
+    pattern: "rgba(160,104,64,0.07)",
+  },
+};
+
+const RoyalCard = ({ onReveal, cardData }: { onReveal: () => void; cardData: CardData }) => {
   const [isOpened, setIsOpened] = useState(false);
-  
-  // Mouse position for tilt effect
+  const theme = THEMES[cardData.template];
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-
-  // Smooth springs for rotation
-  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [15, -15]), { damping: 20, stiffness: 100 });
-  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-15, 15]), { damping: 20, stiffness: 100 });
+  const rotateX = useSpring(useTransform(mouseY, [-280, 280], [12, -12]), { damping: 22, stiffness: 90 });
+  const rotateY = useSpring(useTransform(mouseX, [-280, 280], [-12, 12]), { damping: 22, stiffness: 90 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isOpened) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    mouseX.set(e.clientX - centerX);
-    mouseY.set(e.clientY - centerY);
+    mouseX.set(e.clientX - rect.left - rect.width / 2);
+    mouseY.set(e.clientY - rect.top - rect.height / 2);
   };
 
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
+
+  const genderTitle = cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : "Friend";
 
   return (
-    <div className="relative perspective-2000 py-20 px-4">
-      <motion.div
-        className="relative w-80 h-[480px] md:w-[400px] md:h-[560px] cursor-pointer preserve-3d group"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onClick={() => {
-          if (!isOpened) {
-            setIsOpened(true);
-            setTimeout(onReveal, 2500);
-          }
-        }}
-        style={{ rotateX: isOpened ? 0 : rotateX, rotateY: isOpened ? 0 : rotateY }}
-        animate={isOpened ? { rotateY: -180 } : {}}
-        transition={isOpened ? { duration: 1.5, ease: "easeInOut" } : { type: "spring", damping: 30 }}
-      >
-        {/* Front of the Card */}
-        <div className="absolute inset-0 backface-hidden z-20">
-          <div className="w-full h-full bg-[#004d4d] rounded-2xl border-4 border-[#d4af37] shadow-2xl flex flex-col items-center justify-between p-8 overflow-hidden">
-            {/* Glossy Overlay Reflection */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity" />
-            
-            {/* Intricate Pattern Overlay */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none" 
-                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L100 50 L50 100 L0 50 Z' fill='none' stroke='%23ffd700' stroke-width='1'/%3E%3C/svg%3E")`, backgroundSize: '40px 40px' }} />
-            
-            <div className="relative z-10 w-full flex justify-center">
-               <div className="w-16 h-1 w-full bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-            </div>
-
-            <div className="relative z-10 text-center space-y-4">
-              <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="w-24 h-24 md:w-32 md:h-32 mx-auto filter drop-shadow-[0_0_10px_#d4af37]"
-              >
-                <svg viewBox="0 0 100 100" className="w-full h-full text-[#d4af37]">
-                   <path d="M50 5 Q70 5 85 20 Q95 35 95 55 Q95 75 80 90 Q65 95 50 95 Q35 95 20 80 Q5 65 5 45 Q5 25 20 10 Q35 5 50 5 Z" fill="none" stroke="currentColor" strokeWidth="2" />
-                   <path d="M50 15 Q65 15 75 25 Q85 35 85 50 Q85 65 75 75 Q65 85 50 85 Q35 85 25 75 Q15 65 15 50 Q15 35 25 25 Q35 15 50 15 Z" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-                   <path d="M50 25 L60 35 L50 45 L40 35 Z" fill="currentColor" />
-                </svg>
-              </motion.div>
-              <h1 className="font-display text-3xl md:text-5xl gold-foil-text tracking-widest uppercase">
-                Ramadan<br/>Kareem
-              </h1>
-            </div>
-
-            {/* Simulated Wax Seal / Interactive Touchpoint */}
-            <div className="relative z-30 group/seal">
-              <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="w-16 h-16 bg-[#a61c1c] rounded-full flex items-center justify-center border-2 border-[#d4af37] shadow-lg relative"
-              >
-                <svg viewBox="0 0 100 100" className="w-10 h-10 text-[#d4af37]">
-                  <path d="M50 20 L60 40 L80 40 L65 55 L70 75 L50 65 L30 75 L35 55 L20 40 L40 40 Z" fill="currentColor" />
-                </svg>
-                {/* Glowing ring */}
-                <div className="absolute inset-0 rounded-full border-2 border-gold/40 animate-ping opacity-20" />
-              </motion.div>
-            </div>
-
-            <div className="relative z-10 w-full text-center">
-               <p className="text-gold-light/60 font-body text-xs tracking-[0.5em] mb-4 uppercase">
-                  Tap to unfold blessings
-               </p>
-               <div className="w-16 h-[2px] w-full bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-            </div>
-          </div>
-        </div>
-
-        {/* Back of the Card (Revealed after flip) */}
-        <div className="absolute inset-0 backface-hidden z-10 rotate-y-180">
-          <div className="w-full h-full bg-[#fdfaf1] rounded-2xl border-4 border-[#d4af37] shadow-inner p-10 flex flex-col items-center justify-center text-center">
-            {/* High-quality Texture Overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                 style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/paper-fibers.png")` }} />
-            
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={isOpened ? { scale: 1, opacity: 1 } : {}}
-              transition={{ delay: 1, duration: 1 }}
-              className="space-y-6 relative z-10"
-            >
-              <h2 className="font-display text-4xl text-[#004d4d] mb-4">Ramadan Mubarak</h2>
-              <p className="font-body text-[#004d4d]/80 leading-relaxed text-lg italic">
-                Wishing you a month filled with peace, <br/>
-                reflection, and endless blessings.
-              </p>
-              <div className="w-12 h-12 mx-auto text-[#d4af37] opacity-40">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" />
-                </svg>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Decorative Surroundings */}
+    <div className="relative py-16 px-4 flex flex-col items-center" style={{ perspective: 1400 }}>
+      {/* Decorative orbits */}
       <AnimatePresence>
         {!isOpened && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 pointer-events-none"
-          >
-             <div className="absolute top-10 left-10 w-20 h-20 border border-[#d4af37]/20 rounded-full animate-pulse" />
-             <div className="absolute bottom-20 right-10 w-32 h-32 border border-[#d4af37]/10 rounded-full animate-pulse delay-700" />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-8 left-8 w-24 h-24 rounded-full border pointer-events-none" style={{ borderColor: `${theme.accent}20` }}>
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 12, repeat: Infinity, ease: "linear" }} className="w-full h-full rounded-full border border-dashed" style={{ borderColor: `${theme.accent}15` }} />
+            </div>
+            <div className="absolute bottom-16 right-8 w-16 h-16 rounded-full border" style={{ borderColor: `${theme.accent}15` }} />
           </motion.div>
         )}
       </AnimatePresence>
+
+      <motion.div
+        className="relative w-72 h-[440px] md:w-[380px] md:h-[530px] cursor-pointer"
+        style={{ transformStyle: "preserve-3d", rotateX: isOpened ? 0 : rotateX, rotateY: isOpened ? 0 : rotateY }}
+        animate={isOpened ? { rotateY: -180 } : {}}
+        transition={isOpened ? { duration: 1.6, ease: [0.4, 0, 0.2, 1] } : { type: "spring", damping: 28 }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => { if (!isOpened) { setIsOpened(true); setTimeout(onReveal, 2600); } }}
+      >
+        {/* ══════════════ FRONT ══════════════ */}
+        <div className="absolute inset-0 rounded-2xl overflow-hidden" style={{ backfaceVisibility: "hidden", background: theme.bg, border: `3px solid ${theme.border}`, boxShadow: `0 30px 80px -15px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.12)` }}>
+          {/* Gloss reflection */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
+
+          {/* Pattern overlay — diamond grid */}
+          <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'%3E%3Cpath d='M25 2 L48 25 L25 48 L2 25 Z' fill='none' stroke='%23fff' stroke-width='0.7'/%3E%3C/svg%3E")`,
+            backgroundSize: "28px 28px",
+          }} />
+
+          {/* Islamic arch motif at top */}
+          <svg viewBox="0 0 380 60" className="absolute top-0 left-0 w-full" preserveAspectRatio="none">
+            <path d="M0 60 Q95 10 190 30 Q285 50 380 0 L380 0 L0 0 Z" fill={`${theme.accent}12`} />
+            <path d="M0 0 Q95 50 190 30 Q285 10 380 60" fill="none" stroke={`${theme.accent}`} strokeWidth="0.7" opacity="0.3" />
+          </svg>
+
+          {/* Top separator */}
+          <div className="absolute top-6 left-0 w-full flex justify-center">
+            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-[color:var(--accent)] to-transparent" style={{ "--accent": theme.accent } as React.CSSProperties} />
+          </div>
+
+          {/* To: label */}
+          <div className="absolute top-9 left-0 w-full text-center">
+            <p className="font-cinzel text-[9px] tracking-[0.35em] uppercase" style={{ color: `${theme.accentLight}80` }}>
+              To: {cardData.receiverName}
+            </p>
+          </div>
+
+          {/* Centre content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6">
+            {/* Crescent icon */}
+            <motion.div
+              animate={{ scale: [1, 1.06, 1] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+              className="w-20 h-20 md:w-24 md:h-24"
+            >
+              <svg viewBox="0 0 80 80" className="w-full h-full" fill="none">
+                <circle cx="40" cy="40" r="35" stroke={theme.accent} strokeWidth="1" opacity="0.25" />
+                <circle cx="40" cy="40" r="28" stroke={theme.accent} strokeWidth="0.6" opacity="0.15" />
+                <path
+                  d="M40 14 C25 14 14 26 14 40 C14 54 25 66 40 66 C44 66 48 65 52 63 C45 59 40 52 40 44 C40 33 47 24 58 22 C52 17 46 14 40 14 Z"
+                  fill={theme.accent}
+                  style={{ filter: `drop-shadow(0 0 8px ${theme.accent}70)` }}
+                />
+                <circle cx="56" cy="21" r="3.5" fill={theme.accentLight} opacity="0.6" />
+                <circle cx="63" cy="34" r="2" fill={theme.accentLight} opacity="0.4" />
+              </svg>
+            </motion.div>
+
+            {/* Gold foil title */}
+            <h1
+              className="font-display text-3xl md:text-4xl font-bold tracking-widest text-center uppercase"
+              style={{ background: theme.accentFoil, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}
+            >
+              Eid<br />Mubarak
+            </h1>
+
+            <p className="font-arabic text-xl md:text-2xl" style={{ color: theme.accentLight, opacity: 0.8 }}>عيد مبارك</p>
+          </div>
+
+          {/* Wax seal with gesture */}
+          <div className="absolute bottom-10 left-0 w-full flex flex-col items-center gap-3">
+            <motion.div
+              whileHover={{ scale: 1.12, rotate: 6 }}
+              className="w-14 h-14 rounded-full flex items-center justify-center relative"
+              style={{ background: theme.sealColor, border: `2px solid ${theme.accent}70`, boxShadow: `0 0 20px ${theme.sealColor}80` }}
+            >
+              <svg viewBox="0 0 40 40" className="w-8 h-8">
+                <path d="M20 5 L24 14 L34 14 L26 20 L29 29 L20 24 L11 29 L14 20 L6 14 L16 14 Z" fill={theme.accent} opacity="0.9" />
+              </svg>
+              <div className="absolute inset-0 rounded-full border border-white/10 animate-ping opacity-10" />
+            </motion.div>
+
+            <p className="font-cinzel text-[9px] md:text-[10px] tracking-[0.4em] uppercase" style={{ color: `${theme.accentLight}50` }}>
+              Tap to unfold
+            </p>
+
+            <div className="w-1/2 h-px bg-gradient-to-r from-transparent mx-4" style={{ backgroundImage: `linear-gradient(to right, transparent, ${theme.accent}40, transparent)` }} />
+
+            {/* From label */}
+            <p className="font-cinzel text-[9px] tracking-[0.35em] uppercase pb-1" style={{ color: `${theme.accentLight}70` }}>
+              From: {cardData.senderName}
+            </p>
+          </div>
+        </div>
+
+        {/* ══════════════ BACK ══════════════ */}
+        <div
+          className="absolute inset-0 rounded-2xl overflow-hidden"
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: theme.backBg, border: `3px solid ${theme.border}`, boxShadow: "0 30px 70px -15px rgba(0,0,0,0.6)" }}
+        >
+          {/* Light texture */}
+          <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='30' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+            backgroundSize: "40px 40px",
+          }} />
+
+          {/* Corner accents */}
+          {["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"].map((pos, i) => (
+            <div key={i} className={`absolute ${pos} w-6 h-6`} style={{ border: `1px solid ${theme.accent}40`, borderRadius: i === 0 ? "8px 0 0 0" : i === 1 ? "0 8px 0 0" : i === 2 ? "0 0 0 8px" : "0 0 8px 0" }} />
+          ))}
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 20 }}
+            animate={isOpened ? { opacity: 1, scale: 1, y: 0 } : {}}
+            transition={{ delay: 1.1, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col h-full items-center justify-center px-8 text-center gap-4"
+          >
+            {/* Top decorative rule */}
+            <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-current to-transparent" style={{ color: theme.border }} />
+
+            <p className="font-arabic text-2xl md:text-3xl" style={{ color: theme.accent }}> عيد مبارك</p>
+
+            <h2 className="font-display text-2xl md:text-3xl font-semibold" style={{ color: theme.textDark }}>
+              Dear {genderTitle},<br />
+              <span style={{ fontSize: "0.9em" }}>{cardData.receiverName}</span>
+            </h2>
+
+            <p className="font-body text-base md:text-lg leading-relaxed italic" style={{ color: `${theme.textDark}CC` }}>
+              On this blessed Eid, may Allah shower you with prosperity, peace and endless joy.
+              Wishing you and your family a truly beautiful celebration.
+            </p>
+
+            <div className="flex items-center gap-3 w-full justify-center">
+              <div className="h-px flex-1 bg-current opacity-20" style={{ color: theme.border }} />
+              <div className="w-1.5 h-1.5 rotate-45 opacity-60" style={{ background: theme.accent }} />
+              <div className="h-px flex-1 bg-current opacity-20" style={{ color: theme.border }} />
+            </div>
+
+            <div className="text-center">
+              <p className="font-cinzel text-xs tracking-[0.2em] uppercase" style={{ color: `${theme.textDark}80` }}>With love & blessings</p>
+              <p className="font-display text-lg font-semibold mt-1" style={{ color: theme.accent }}>{cardData.senderName}</p>
+            </div>
+
+            {/* Bottom rule */}
+            <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-current to-transparent" style={{ color: theme.border }} />
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 };

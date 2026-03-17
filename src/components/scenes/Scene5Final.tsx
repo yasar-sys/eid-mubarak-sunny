@@ -2,12 +2,17 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import ShareModal from "@/components/ShareModal";
+import { CardData } from "@/components/scenes/Scene0Setup";
 
-const Scene5Final = () => {
+const Scene5Final = ({ cardData }: { cardData: CardData }) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
   const [showCursor, setShowCursor] = useState(true);
-  const fullMessage = "May the celestial blessings of this holy day \nilluminate your path with peace, \njoy, and eternal prosperity.\n\nEid Mubarak.";
+
+  const receiverTitle =
+    cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : "Dear";
+  
+  const fullMessage = `Dear ${receiverTitle} ${cardData.receiverName},\n\nMay the celestial blessings of this holy day\nilluminate your path with peace,\njoy, and eternal prosperity.\n\nEid Mubarak.\n\n— ${cardData.senderName}`;
 
   useEffect(() => {
     let index = 0;
@@ -16,12 +21,16 @@ const Scene5Final = () => {
       index++;
       if (index > fullMessage.length) {
         clearInterval(timer);
-        // Hide cursor after typing
         setTimeout(() => setShowCursor(false), 1500);
-        // Elegant confetti
         const duration = 3 * 1000;
         const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 25, spread: 360, ticks: 80, zIndex: 100, colors: ['#fbbf24', '#fcd34d', '#ffffff', '#d4af37'] };
+        const defaults = {
+          startVelocity: 25,
+          spread: 360,
+          ticks: 80,
+          zIndex: 100,
+          colors: ["#fbbf24", "#fcd34d", "#ffffff", "#d4af37"],
+        };
         const interval: ReturnType<typeof setInterval> = setInterval(() => {
           const timeLeft = animationEnd - Date.now();
           if (timeLeft <= 0) return clearInterval(interval);
@@ -29,7 +38,7 @@ const Scene5Final = () => {
           confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() * 0.4 } }));
         }, 250);
       }
-    }, 50);
+    }, 48);
     return () => clearInterval(timer);
   }, []);
 
@@ -54,7 +63,6 @@ const Scene5Final = () => {
         />
       </div>
 
-      {/* Film grain */}
       <div className="absolute inset-0 film-grain pointer-events-none" />
 
       {/* Glassmorphism Card */}
@@ -74,7 +82,7 @@ const Scene5Final = () => {
         <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-gold/20 rounded-bl-lg" />
         <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-gold/20 rounded-br-lg" />
 
-        <div className="font-cinzel text-xl md:text-3xl text-foreground/90 leading-relaxed whitespace-pre-wrap flex-grow min-h-[200px] flex items-center tracking-wide">
+        <div className="font-cinzel text-xl md:text-2xl text-foreground/90 leading-relaxed whitespace-pre-wrap flex-grow min-h-[200px] flex items-center tracking-wide text-left">
           {typedMessage}
           {showCursor && (
             <motion.span
@@ -97,9 +105,9 @@ const Scene5Final = () => {
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-gold/20" />
         </motion.div>
 
-        {/* Action Button */}
+        {/* Action Buttons */}
         <motion.div
-          className="w-full flex justify-center"
+          className="w-full flex flex-col sm:flex-row items-center justify-center gap-4"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 4 }}
@@ -108,7 +116,6 @@ const Scene5Final = () => {
             onClick={() => setIsShareOpen(true)}
             className="group relative px-10 py-4 rounded-full glass text-gold-light text-sm font-cinzel tracking-[0.2em] uppercase hover:bg-gold/10 transition-all duration-500 cursor-pointer overflow-hidden"
           >
-            {/* Hover sweep */}
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
             <span className="relative z-10">Share Card ✦</span>
           </button>
@@ -125,7 +132,7 @@ const Scene5Final = () => {
         transition={{ delay: 5, duration: 2 }}
       >
         <p className="font-cinzel text-[10px] md:text-xs text-foreground/40 tracking-[0.3em] uppercase leading-loose">
-          Designed & Developed by <span className="text-gold/70">Samin Yasar Sunny</span>
+          Designed &amp; Developed by <span className="text-gold/70">Samin Yasar Sunny</span>
           <br />
           CSE | Mymensingh Engineering College
         </p>
