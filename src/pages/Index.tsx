@@ -21,12 +21,14 @@ const DEFAULT_CARD_DATA: CardData = {
 };
 
 const Index = () => {
-  const [scene, setScene] = useState(-1); // -1 = setup scene
+  const [scene, setScene] = useState(0); // Start at Scene 1 (Spiritual)
   const [cardData, setCardData] = useState<CardData>(DEFAULT_CARD_DATA);
+  const [isCardMakerOpen, setIsCardMakerOpen] = useState(false);
 
   const handleSetupComplete = useCallback((data: CardData) => {
     setCardData(data);
-    setScene(0);
+    setIsCardMakerOpen(false);
+    setScene(2); // Jump to the card opening scene (Scene 3)
   }, []);
 
   const nextScene = useCallback(() => {
@@ -66,12 +68,23 @@ const Index = () => {
       <AudioToggle />
 
       <AnimatePresence mode="wait">
-        {scene === -1 && <Scene0Setup key="s0" onStart={handleSetupComplete} />}
+        {isCardMakerOpen && (
+          <div className="fixed inset-0 z-[100]">
+            <Scene0Setup
+              key="card-maker"
+              onStart={handleSetupComplete}
+              onClose={() => setIsCardMakerOpen(false)}
+            />
+          </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
         {scene === 0 && <Scene1Spiritual key="s1" onNext={nextScene} />}
         {scene === 1 && <Scene2Envelope key="s2" onNext={nextScene} />}
         {scene === 2 && <Scene3Opening key="s3" onNext={nextScene} cardData={cardData} />}
         {scene === 3 && <Scene4Celebration key="s4" onNext={nextScene} />}
-        {scene === 4 && <Scene5Final key="s5" cardData={cardData} />}
+        {scene === 4 && <Scene5Final key="s5" cardData={cardData} onOpenCardMaker={() => setIsCardMakerOpen(true)} />}
       </AnimatePresence>
     </div>
   );

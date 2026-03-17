@@ -41,7 +41,7 @@ const templates: { id: CardTemplate; name: string; desc: string; gradient: strin
   },
 ];
 
-const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
+const Scene0Setup = ({ onStart, onClose }: { onStart: (data: CardData) => void; onClose?: () => void }) => {
   const [step, setStep] = useState<"intro" | "details" | "template">("intro");
   const [userName, setUserName] = useState("");
   const [gender, setGender] = useState<Gender>("not-mentioned");
@@ -108,6 +108,19 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
             exit={{ opacity: 0, y: -30, filter: "blur(6px)" }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
+            {/* Close button for sub-feature mode */}
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="absolute top-0 right-0 z-30 p-2 rounded-full hover:bg-white/10 text-foreground/40 hover:text-foreground transition-colors"
+                title="Close Card Maker"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+
             {/* Crescent + star icon */}
             <motion.div
               className="mb-8"
@@ -160,7 +173,20 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="glass-strong rounded-3xl glass-glow p-8 flex flex-col gap-6">
-              {/* Top line */}
+            {/* Close button */}
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 z-30 p-2 rounded-full hover:bg-white/10 text-foreground/40 hover:text-foreground transition-colors"
+                title="Close Card Maker"
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+
+            {/* Top line */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
 
               <div className="text-center mb-2">
@@ -254,6 +280,19 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="glass-strong rounded-3xl glass-glow p-8 flex flex-col gap-5">
+              {/* Close button */}
+              {onClose && (
+                <button
+                  onClick={onClose}
+                  className="absolute top-4 right-4 z-30 p-2 rounded-full hover:bg-white/10 text-foreground/40 hover:text-foreground transition-colors"
+                  title="Close Card Maker"
+                >
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+
               <div className="text-center mb-1">
                 <h2 className="font-cinzel text-gold text-lg tracking-widest uppercase">Choose Your Design</h2>
                 <p className="font-body text-foreground/50 text-sm mt-1">Select the card template for {receiverName}</p>

@@ -1,5 +1,7 @@
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { toPng } from "html-to-image";
+import { Download } from "lucide-react";
 import { CardData, CardTemplate } from "@/components/scenes/Scene0Setup";
 
 /* ─── Per-template visual configs ─── */
@@ -44,7 +46,34 @@ const THEMES: Record<CardTemplate, {
 
 const RoyalCard = ({ onReveal, cardData }: { onReveal: () => void; cardData: CardData }) => {
   const [isOpened, setIsOpened] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const theme = THEMES[cardData.template];
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const downloadCard = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!cardRef.current) return;
+    setIsDownloading(true);
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        cacheBust: true,
+        width: cardRef.current.offsetWidth,
+        height: cardRef.current.offsetHeight,
+        style: {
+          transform: 'none',
+          borderRadius: '16px'
+        }
+      });
+      const link = document.createElement('a');
+      link.download = `eid-card-${cardData.receiverName.toLowerCase().replace(/\s+/g, '-')}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Download failed', err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -174,6 +203,7 @@ const RoyalCard = ({ onReveal, cardData }: { onReveal: () => void; cardData: Car
 
         {/* ══════════════ BACK ══════════════ */}
         <div
+          ref={cardRef}
           className="absolute inset-0 rounded-2xl overflow-hidden"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: theme.backBg, border: `3px solid ${theme.border}`, boxShadow: "0 30px 70px -15px rgba(0,0,0,0.6)" }}
         >
@@ -219,6 +249,19 @@ const RoyalCard = ({ onReveal, cardData }: { onReveal: () => void; cardData: Car
               <p className="font-cinzel text-xs tracking-[0.2em] uppercase" style={{ color: `${theme.textDark}80` }}>With love & blessings</p>
               <p className="font-display text-lg font-semibold mt-1" style={{ color: theme.accent }}>{cardData.senderName}</p>
             </div>
+
+            {/* Download Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={downloadCard}
+              disabled={isDownloading}
+              className="mt-2 flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-cinzel tracking-widest uppercase transition-all duration-300"
+              style={{ borderColor: `${theme.accent}40`, color: theme.textDark, background: `${theme.accent}10` }}
+            >
+              <Download className={`w-3 h-3 ${isDownloading ? 'animate-bounce' : ''}`} />
+              {isDownloading ? 'Saving...' : 'Download Card'}
+            </motion.button>
 
             {/* Bottom rule */}
             <div className="w-1/2 h-px bg-gradient-to-r from-transparent via-current to-transparent" style={{ color: theme.border }} />
