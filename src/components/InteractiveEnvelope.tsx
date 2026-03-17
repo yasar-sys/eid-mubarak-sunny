@@ -1,117 +1,171 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
-/** Interactive 3D Envelope Component */
-const InteractiveEnvelope = ({
-  onOpen,
-}: {
-  onOpen: () => void;
-}) => {
+const InteractiveEnvelope = ({ onOpen }: { onOpen: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
     if (!isOpen) {
       setIsOpen(true);
-      setTimeout(onOpen, 2000); // Trigger next scene after animation
+      setTimeout(onOpen, 2200);
     }
   };
 
   return (
-    <div 
-      className="relative w-72 h-48 md:w-[450px] md:h-[300px] cursor-pointer group"
+    <div
+      className="relative w-[280px] h-[190px] sm:w-[340px] sm:h-[230px] md:w-[420px] md:h-[280px] cursor-pointer group"
       onClick={handleOpen}
     >
-      {/* Shadow */}
-      <div className="absolute inset-0 bg-black/40 blur-3xl scale-110 pointer-events-none translate-y-8" />
+      {/* Ambient glow */}
+      <motion.div
+        className="absolute -inset-8 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, hsl(43 100% 60% / 0.08) 0%, transparent 70%)" }}
+        animate={isOpen ? { opacity: [0.5, 1, 0] } : { opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: isOpen ? 1.5 : 4, repeat: isOpen ? 0 : Infinity }}
+      />
 
-      {/* Back Envelope Layer */}
-      <div className="absolute inset-0 bg-gold-dark rounded-lg shadow-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-black/20" />
+      {/* Shadow */}
+      <motion.div
+        className="absolute inset-0 bg-night-deep/50 blur-3xl scale-110 pointer-events-none translate-y-6 rounded-xl"
+        animate={isOpen ? { opacity: 0, scale: 0.8 } : {}}
+        transition={{ duration: 1 }}
+      />
+
+      {/* Back envelope body */}
+      <div className="absolute inset-0 rounded-xl overflow-hidden">
+        <div className="w-full h-full bg-gradient-to-br from-[hsl(43,80%,55%)] to-[hsl(43,100%,40%)]" />
+        {/* Subtle pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E")`,
+            backgroundSize: "30px 30px",
+          }}
+        />
       </div>
 
-      {/* Inner Card (The actual greeting content) */}
+      {/* Inner card — slides up when opened */}
       <motion.div
-        className="absolute inset-2 top-4 bg-[#fff9ea] rounded-md shadow-inner flex flex-col items-center justify-center p-6 border-l-4 border-gold/20"
+        className="absolute inset-[6px] sm:inset-2 top-3 sm:top-4 glass-strong rounded-lg flex flex-col items-center justify-center p-4 sm:p-6 z-10 overflow-hidden"
         initial={{ y: 0 }}
-        animate={isOpen ? { y: -180 } : { y: 0 }}
-        transition={{ delay: 1, duration: 1, ease: "easeOut" }}
+        animate={isOpen ? { y: "-70%" } : { y: 0 }}
+        transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="w-12 h-12 md:w-16 md:h-16 mb-4 opacity-70">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="text-gold-dark">
-            <path d="M12 2L4.5 9.5V19.5H19.5V9.5L12 2Z" />
+        {/* Glow line */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
+        <motion.div
+          className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-3 text-gold/60"
+          animate={{ rotate: [0, 5, -5, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
           </svg>
-        </div>
-        <p className="font-display text-night-deep text-center text-sm md:text-lg italic opacity-80">
-          "A special blessing for you..."
+        </motion.div>
+        <p className="font-cinzel text-foreground/80 text-center text-xs sm:text-sm md:text-base tracking-wide">
+          "A special blessing<br />awaits you..."
         </p>
       </motion.div>
 
-      {/* Front Fold (Bottom/Sides) */}
-      <div className="absolute inset-0 z-20">
-        <svg viewBox="0 0 450 300" className="w-full h-full drop-shadow-xl">
+      {/* Front fold — side & bottom triangles */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        <svg viewBox="0 0 420 280" className="w-full h-full" preserveAspectRatio="none">
           <defs>
             <linearGradient id="foldGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(43, 100%, 65%)" />
-              <stop offset="100%" stopColor="hsl(43, 100%, 45%)" />
+              <stop offset="0%" stopColor="hsl(43, 100%, 62%)" />
+              <stop offset="100%" stopColor="hsl(43, 100%, 48%)" />
             </linearGradient>
-            <filter id="innerShadow">
-              <feOffset dx="0" dy="2" />
-              <feGaussianBlur stdDeviation="2" result="offset-blur" />
-              <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
-              <feFlood floodColor="black" floodOpacity="0.3" result="color" />
-              <feComposite operator="in" in="color" in2="inverse" result="shadow" />
-            </filter>
+            <linearGradient id="sideGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="hsl(43, 90%, 58%)" />
+              <stop offset="100%" stopColor="hsl(43, 100%, 52%)" />
+            </linearGradient>
           </defs>
-          
-          {/* Side triangles */}
-          <path d="M0 0 L225 150 L0 300 Z" fill="hsl(43, 100%, 55%)" />
-          <path d="M450 0 L225 150 L450 300 Z" fill="hsl(43, 100%, 55%)" />
-          
+          {/* Left triangle */}
+          <path d="M0 0 L210 140 L0 280 Z" fill="url(#sideGrad)" opacity="0.95" />
+          {/* Right triangle */}
+          <path d="M420 0 L210 140 L420 280 Z" fill="url(#sideGrad)" opacity="0.95" />
           {/* Bottom triangle */}
-          <path d="M0 300 L225 130 L450 300 Z" fill="url(#foldGrad)" />
-          
-          {/* Intricate Pattern on bottom fold */}
-          <path 
-            d="M180 280 Q225 240 270 280 M190 270 Q225 245 260 270" 
-            fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="1" 
+          <path d="M0 280 L210 120 L420 280 Z" fill="url(#foldGrad)" />
+          {/* Decorative arcs on bottom */}
+          <path
+            d="M170 265 Q210 235 250 265"
+            fill="none"
+            stroke="hsl(43,100%,75%)"
+            strokeWidth="0.8"
+            opacity="0.3"
+          />
+          <path
+            d="M185 258 Q210 240 235 258"
+            fill="none"
+            stroke="hsl(43,100%,75%)"
+            strokeWidth="0.5"
+            opacity="0.2"
           />
         </svg>
       </div>
 
-      {/* Top Flap */}
+      {/* Top flap — opens on click */}
       <motion.div
         className="absolute inset-0 z-30 origin-top"
+        style={{ perspective: 800 }}
         initial={{ rotateX: 0 }}
-        animate={isOpen ? { rotateX: 160 } : { rotateX: 0 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-        style={{ perspective: "1000px" }}
+        animate={isOpen ? { rotateX: 175 } : { rotateX: 0 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
       >
-        <svg viewBox="0 0 450 300" className="w-full h-full drop-shadow-2xl">
-          <path 
-            d="M0 0 L225 155 L450 0 Z" 
-            fill="hsl(43, 100%, 60%)" 
-            stroke="hsl(43, 100%, 40%)" 
-            strokeWidth="0.5"
+        <svg viewBox="0 0 420 280" className="w-full h-full drop-shadow-xl" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="flapGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(43, 100%, 60%)" />
+              <stop offset="100%" stopColor="hsl(43, 80%, 50%)" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0 0 L210 148 L420 0 Z"
+            fill="url(#flapGrad)"
+            stroke="hsl(43, 100%, 70%)"
+            strokeWidth="0.3"
           />
-          {/* Decorative Seal */}
-          <circle cx="225" cy="155" r="15" fill="hsl(43, 100%, 45%)" stroke="white" strokeWidth="0.5" opacity="0.8" />
-          <path d="M220 150 L230 160 M230 150 L220 160" stroke="white" strokeWidth="1" opacity="0.5" />
+          {/* Wax seal */}
+          <circle cx="210" cy="100" r="18" fill="hsl(0, 60%, 35%)" opacity="0.9" />
+          <circle cx="210" cy="100" r="14" fill="none" stroke="hsl(43,100%,70%)" strokeWidth="0.8" opacity="0.6" />
+          <path d="M205 95 L215 105 M215 95 L205 105" stroke="hsl(43,100%,80%)" strokeWidth="1.2" opacity="0.7" />
         </svg>
       </motion.div>
 
-      {/* "Open Me" Indicator */}
-      {!isOpen && (
-        <motion.div
-          className="absolute inset-0 z-40 flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="px-4 py-2 rounded-full bg-gold/20 backdrop-blur-sm border border-gold/40 text-white text-xs tracking-[0.3em] uppercase">
-            Tap to Open
-          </div>
-        </motion.div>
-      )}
+      {/* "Tap to Open" indicator */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.div
+            className="absolute inset-0 z-40 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="px-4 py-2 rounded-full glass text-foreground/80 text-[10px] sm:text-xs font-cinzel tracking-[0.3em] uppercase"
+              animate={{ opacity: [0.5, 1, 0.5], scale: [0.98, 1.02, 0.98] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Tap to Open
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Light burst on open */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="absolute inset-0 z-[5] rounded-xl pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.8, 0] }}
+            transition={{ duration: 1.5 }}
+            style={{ background: "radial-gradient(circle, hsl(43 100% 70% / 0.4) 0%, transparent 70%)" }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
