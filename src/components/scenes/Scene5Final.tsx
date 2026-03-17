@@ -4,6 +4,11 @@ import confetti from "canvas-confetti";
 import ShareModal from "@/components/ShareModal";
 import { CardData } from "@/components/scenes/Scene0Setup";
 
+// Import backgrounds to ensure Vite handles them correctly
+import bg1 from "@/assets/eid-bg-1.jpg";
+import bg2 from "@/assets/eid-bg-2.jpg";
+import bg3 from "@/assets/eid-bg-3.jpg";
+
 const Scene5Final = ({ cardData }: { cardData: CardData }) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
@@ -15,7 +20,7 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
   const fullMessage = `Dear ${receiverTitle} ${cardData.receiverName},\n\nMay the celestial blessings of this holy day\nilluminate your path with peace,\njoy, and eternal prosperity.\n\nEid Mubarak.\n\n— ${cardData.senderName}`;
 
   const [currentBg, setCurrentBg] = useState(0);
-  const backgrounds = ["/src/assets/eid-bg-1.jpg", "/src/assets/eid-bg-2.jpg", "/src/assets/eid-bg-3.jpg"];
+  const backgrounds = [bg1, bg2, bg3];
 
   useEffect(() => {
     const bgTimer = setInterval(() => {
