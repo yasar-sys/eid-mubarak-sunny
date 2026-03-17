@@ -82,6 +82,21 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
         <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-gold/20 rounded-bl-lg" />
         <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-gold/20 rounded-br-lg" />
 
+        {/* Prayer Scene Image */}
+        <motion.div
+          className="relative w-full aspect-[21/9] mb-8 rounded-2xl overflow-hidden border border-gold/20 grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.8, duration: 1.5 }}
+        >
+          <img 
+            src="/src/assets/eid-prayer.png" 
+            alt="Eid Prayer" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        </motion.div>
+
         <div className="font-cinzel text-xl md:text-2xl text-foreground/90 leading-relaxed whitespace-pre-wrap flex-grow min-h-[200px] flex items-center tracking-wide text-left">
           {typedMessage}
           {showCursor && (
