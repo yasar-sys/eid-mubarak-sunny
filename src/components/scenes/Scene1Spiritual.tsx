@@ -7,6 +7,7 @@ import bg1 from "@/assets/spiritual-bg-1.jpg";
 import bg2 from "@/assets/spiritual-bg-2.jpg";
 import bg3 from "@/assets/spiritual-bg-3.jpg";
 import bg4 from "@/assets/spiritual-bg-4.jpg";
+import clubLogo from "@/assets/mec-computer-club-logo.jpg";
 
 const Scene1Spiritual = ({ onNext }: { onNext: () => void }) => {
   const [currentBg, setCurrentBg] = useState(0);
@@ -77,18 +78,44 @@ const Scene1Spiritual = ({ onNext }: { onNext: () => void }) => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-6"
+          className="space-y-4 md:space-y-6 flex flex-col items-center"
         >
-          <motion.h2 
-            className="text-gold-light uppercase tracking-[0.5em] text-xs md:text-sm font-cinzel"
-            initial={{ opacity: 0, letterSpacing: "0.8em" }}
-            animate={{ opacity: 1, letterSpacing: "0.5em" }}
-            transition={{ duration: 2, delay: 0.8 }}
+          {/* MEC Computer Club Branding */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.6 }}
+            className="relative mb-2"
           >
-            Eid Mubarak From
-          </motion.h2>
+            <div className="absolute inset-0 bg-white/20 blur-xl rounded-full" />
+            <img 
+              src={clubLogo} 
+              className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-2xl object-contain shadow-2xl border border-white/20" 
+              alt="MEC Computer Club Logo"
+            />
+          </motion.div>
 
-          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight drop-shadow-2xl">
+          <div className="space-y-1 md:space-y-2">
+            <motion.h3 
+              className="text-white/90 text-xl md:text-2xl font-display font-medium tracking-wider"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.8 }}
+            >
+              MEC COMPUTER CLUB
+            </motion.h3>
+            
+            <motion.h2 
+              className="text-gold-light uppercase tracking-[0.5em] text-[10px] md:text-xs font-cinzel opacity-70"
+              initial={{ opacity: 0, letterSpacing: "0.8em" }}
+              animate={{ opacity: 1, letterSpacing: "0.5em" }}
+              transition={{ duration: 2, delay: 1 }}
+            >
+              Presents
+            </motion.h2>
+          </div>
+
+          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight drop-shadow-2xl pt-2">
             <motion.span
               className="block"
               initial={{ opacity: 0, y: 30 }}
