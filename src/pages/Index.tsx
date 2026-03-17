@@ -24,7 +24,6 @@ const Index = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Normalize mouse coordinates (-1 to 1)
       mouseX.set((e.clientX / window.innerWidth) * 2 - 1);
       mouseY.set((e.clientY / window.innerHeight) * 2 - 1);
     };
@@ -32,23 +31,22 @@ const Index = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  // Transform mouse values into subtle positional shifts
-  const bgX = useTransform(mouseX, [-1, 1], ["-1%", "1%"]);
-  const bgY = useTransform(mouseY, [-1, 1], ["-1%", "1%"]);
+  const bgX = useTransform(mouseX, [-1, 1], ["-2%", "2%"]);
+  const bgY = useTransform(mouseY, [-1, 1], ["-1.5%", "1.5%"]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-night-deep">
       {/* Interactive Golden Cursor Trail */}
       <GoldenMagicTrail />
 
-      {/* Global Background Particles for 2nd-5th scenes; Scene 1 hides this via opacity */}
+      {/* Global Background Particles with enhanced parallax */}
       {scene > 0 && (
         <motion.div
-          className="absolute inset-0 w-[102%] h-[102%] -left-[1%] -top-[1%]"
+          className="absolute inset-0 w-[104%] h-[104%] -left-[2%] -top-[2%]"
           style={{ x: bgX, y: bgY }}
         >
           <StarField />
-          <FloatingParticles count={15} />
+          <FloatingParticles count={18} />
           <ShootingStars />
         </motion.div>
       )}
@@ -56,7 +54,7 @@ const Index = () => {
       {/* Audio toggle */}
       <AudioToggle />
 
-      {/* Cinematic Scene Transitions */}
+      {/* Cinematic Scene Transitions with blur */}
       <AnimatePresence mode="wait">
         {scene === 0 && <Scene1Spiritual key="s1" onNext={nextScene} />}
         {scene === 1 && <Scene2Envelope key="s2" onNext={nextScene} />}

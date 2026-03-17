@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 
-/** Floating golden particles that drift upward — adds depth to scenes */
+/** Floating particles with smooth GPU-accelerated motion */
 const FloatingParticles = ({ 
   count = 20,
   color 
@@ -11,15 +11,16 @@ const FloatingParticles = ({
 }) => {
   const particles = useMemo(() =>
     Array.from({ length: count }, (_, i) => {
-      const colors = ["#FACC15", "#38BDF8", "#F472B6", "#A78BFA", "#4ADE80"]; // gold, sky, pink, purple, green
+      const goldPalette = ["#fbbf24", "#fcd34d", "#d4af37", "#f59e0b", "#fef3c7"];
       return {
         id: i,
         left: `${Math.random() * 100}%`,
-        size: Math.random() * 4 + 2,
-        duration: Math.random() * 8 + 6,
-        delay: Math.random() * 5,
-        opacity: Math.random() * 0.4 + 0.3,
-        color: color || colors[Math.floor(Math.random() * colors.length)]
+        size: Math.random() * 3 + 1.5,
+        duration: Math.random() * 10 + 8,
+        delay: Math.random() * 6,
+        opacity: Math.random() * 0.35 + 0.15,
+        color: color || goldPalette[Math.floor(Math.random() * goldPalette.length)],
+        sway: (Math.random() - 0.5) * 80,
       };
     }),
     [count, color]
@@ -30,19 +31,18 @@ const FloatingParticles = ({
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute rounded-full"
+          className="absolute rounded-full will-change-transform"
           style={{
             left: p.left,
             bottom: -20,
             width: p.size,
             height: p.size,
-            opacity: p.opacity,
             backgroundColor: p.color,
-            boxShadow: `0 0 10px ${p.color}, 0 0 20px ${p.color}` // add glow
+            boxShadow: `0 0 ${p.size * 3}px ${p.color}`,
           }}
           animate={{
             y: [0, -window.innerHeight - 50],
-            x: [0, Math.sin(p.id) * 60, 0], // increased sway
+            x: [0, p.sway, 0],
             opacity: [0, p.opacity, p.opacity, 0],
           }}
           transition={{
