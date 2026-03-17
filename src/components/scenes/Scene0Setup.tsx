@@ -180,26 +180,6 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
                 {errors.userName && <p className="text-red-400 text-xs mt-1 font-body">{errors.userName}</p>}
               </div>
 
-              {/* Gender */}
-              <div>
-                <label className="block font-cinzel text-xs text-gold/60 tracking-widest uppercase mb-2">Gender</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {(["male", "female", "not-mentioned"] as Gender[]).map((g) => (
-                    <button
-                      key={g}
-                      onClick={() => setGender(g)}
-                      className={`py-2.5 rounded-xl border font-cinzel text-xs tracking-wide capitalize transition-all duration-300 ${
-                        gender === g
-                          ? "bg-gold/20 border-gold text-gold shadow-[0_0_15px_hsl(43,100%,60%,0.2)]"
-                          : "border-white/10 text-foreground/50 hover:border-gold/30 hover:text-foreground/80"
-                      }`}
-                    >
-                      {g === "not-mentioned" ? "Other" : g}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* Divider */}
               <div className="flex items-center gap-3">
                 <div className="h-px flex-1 bg-gold/10" />
@@ -229,6 +209,26 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
                   onChange={(e) => { setReceiverName(e.target.value); setErrors((p) => ({ ...p, receiverName: "" })); }}
                 />
                 {errors.receiverName && <p className="text-red-400 text-xs mt-1 font-body">{errors.receiverName}</p>}
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label className="block font-cinzel text-xs text-gold/60 tracking-widest uppercase mb-2">Gender</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["male", "female", "not-mentioned"] as Gender[]).map((g) => (
+                    <button
+                      key={g}
+                      onClick={() => setGender(g)}
+                      className={`py-2.5 rounded-xl border font-cinzel text-xs tracking-wide capitalize transition-all duration-300 ${
+                        gender === g
+                          ? "bg-gold/20 border-gold text-gold shadow-[0_0_15px_hsl(43,100%,60%,0.2)]"
+                          : "border-white/10 text-foreground/50 hover:border-gold/30 hover:text-foreground/80"
+                      }`}
+                    >
+                      {g === "not-mentioned" ? "Other" : g}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <motion.button
