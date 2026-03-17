@@ -4,7 +4,7 @@ import confetti from "canvas-confetti";
 import ShareModal from "@/components/ShareModal";
 import { CardData } from "@/components/scenes/Scene0Setup";
 
-const Scene5Final = ({ cardData, onOpenCardMaker }: { cardData: CardData; onOpenCardMaker?: () => void }) => {
+const Scene5Final = ({ cardData }: { cardData: CardData }) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
   const [showCursor, setShowCursor] = useState(true);
@@ -105,6 +105,7 @@ const Scene5Final = ({ cardData, onOpenCardMaker }: { cardData: CardData; onOpen
           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-gold/20" />
         </motion.div>
 
+        {/* Action Buttons */}
         <motion.div
           className="w-full flex flex-col sm:flex-row items-center justify-center gap-4"
           initial={{ opacity: 0, y: 10 }}
@@ -118,16 +119,6 @@ const Scene5Final = ({ cardData, onOpenCardMaker }: { cardData: CardData; onOpen
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
             <span className="relative z-10">Share Card ✦</span>
           </button>
-
-          {onOpenCardMaker && (
-            <button
-              onClick={onOpenCardMaker}
-              className="group relative px-10 py-4 rounded-full bg-gold/10 border border-gold/30 text-gold-light text-sm font-cinzel tracking-[0.2em] uppercase hover:bg-gold/20 transition-all duration-500 cursor-pointer overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-              <span className="relative z-10">Create Your Own Card ✦</span>
-            </button>
-          )}
         </motion.div>
       </motion.div>
 

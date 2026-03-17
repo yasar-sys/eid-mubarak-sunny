@@ -51,7 +51,7 @@ const InteractiveEnvelope = ({ onOpen }: { onOpen: () => void }) => {
         onMouseEnter={() => setIsHovered(true)}
         onClick={handleOpen}
         style={{ rotateX: tiltX, rotateY: tiltY }}
-        animate={isOpen ? { scale: 1.01 } : { y: 0 }}
+        animate={isOpen ? { y: -6, scale: 1.01 } : isHovered ? { y: -8 } : { y: 0 }}
         transition={{ type: "spring", stiffness: 120, damping: 14 }}
       >
         {/* ── Ambient glow ── */}
