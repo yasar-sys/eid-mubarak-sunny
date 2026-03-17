@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import ShareModal from "@/components/ShareModal";
@@ -13,6 +13,16 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
     cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : "Dear";
   
   const fullMessage = `Dear ${receiverTitle} ${cardData.receiverName},\n\nMay the celestial blessings of this holy day\nilluminate your path with peace,\njoy, and eternal prosperity.\n\nEid Mubarak.\n\n— ${cardData.senderName}`;
+
+  const [currentBg, setCurrentBg] = useState(0);
+  const backgrounds = ["/src/assets/eid-bg-1.jpg", "/src/assets/eid-bg-2.jpg", "/src/assets/eid-bg-3.jpg"];
+
+  useEffect(() => {
+    const bgTimer = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % backgrounds.length);
+    }, 6000);
+    return () => clearInterval(bgTimer);
+  }, []);
 
   useEffect(() => {
     let index = 0;
@@ -44,21 +54,43 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
 
   return (
     <motion.div
-      className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 md:px-6 overflow-hidden bg-night-deep"
-      initial={{ opacity: 0, filter: "blur(10px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+      className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 md:px-6 overflow-hidden bg-black"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5 }}
     >
-      {/* Ambient background orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Cinematic Background Slideshow */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentBg}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 2.5, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <img 
+              src={backgrounds[currentBg]} 
+              className="w-full h-full object-cover" 
+              alt="Eid Celebration Background"
+            />
+          </motion.div>
+        </AnimatePresence>
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] z-10" />
+      </div>
+
+      {/* Ambient background orbs (layered above images, below card) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
         <motion.div
-          className="absolute top-[30%] left-[20%] w-[350px] h-[350px] rounded-full bg-gold/[0.04] blur-[120px]"
-          animate={{ scale: [1, 1.3, 1] }}
+          className="absolute top-[30%] left-[20%] w-[350px] h-[350px] rounded-full bg-gold/[0.08] blur-[120px]"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 8, repeat: Infinity }}
         />
         <motion.div
-          className="absolute bottom-[20%] right-[20%] w-[250px] h-[250px] rounded-full bg-moonlight/[0.03] blur-[100px]"
-          animate={{ scale: [1.2, 1, 1.2] }}
+          className="absolute bottom-[20%] right-[20%] w-[250px] h-[250px] rounded-full bg-moonlight/[0.05] blur-[100px]"
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }}
           transition={{ duration: 10, repeat: Infinity }}
         />
       </div>
