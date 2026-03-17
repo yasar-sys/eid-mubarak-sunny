@@ -4,7 +4,7 @@ A world-class, interactive, and cinematic web odyssey designed to celebrate Eid-
 
 ---
 
-## 🏆 Award-Winning Interactive Features
+
 
 ### 1. Immersive 5-Scene Storytelling
 The experience is not just a page; it's a **journey**. Users are guided through a carefully choreographed 5-scene narrative that builds emotional resonance before the final reveal.
@@ -29,15 +29,7 @@ The app offers a premium **Identity Setup** phase that goes beyond simple text i
 
 ---
 
-## 🎙️ Presentation Voice-over Script
 
-*"Welcome to the Cinematic Eid experience—a digital odyssey designed to celebrate unity and devotion. As we begin, the user is invited to define their identity, choosing a theme that resonates with their spirit. Notice the premium glassmorphism and the fluid transitions as we prepare for the journey.*
-
-*At the heart of this experience lies the physical interaction. Observe the 3D envelope—modeled with precise layering to mimic reality. As the flap rotates open, the personalized card slides upward, emerging gracefully from within. It’s a moment of discovery.*
-
-*The journey concludes with a cinematic celebration. Against a backdrop of flickering memories and spiritual gatherings, the final greeting emerges. It is personalized, it is heartfelt, and it is powered by modern web technology. This is more than a card; it’s a memory captured in code."*
-
----
 
 ## 🛠️ Tech Stack
 
