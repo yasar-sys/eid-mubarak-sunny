@@ -15,9 +15,10 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
   const [showCursor, setShowCursor] = useState(true);
 
   const receiverTitle =
-    cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : "Dear";
+    cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : null;
   
-  const fullMessage = `Dear ${receiverTitle} ${cardData.receiverName},\n\nMay the celestial blessings of this holy day\nilluminate your path with peace,\njoy, and eternal prosperity.\n\nEid Mubarak.\n\n— ${cardData.senderName}`;
+  const greeting = receiverTitle ? `Dear ${receiverTitle} ${cardData.receiverName}` : `Dear ${cardData.receiverName}`;
+  const fullMessage = `${greeting},\n\nMay the celestial blessings of this holy day\nilluminate your path with peace,\njoy, and eternal prosperity.\n\nEid Mubarak.\n\n— ${cardData.senderName}`;
 
   const [currentBg, setCurrentBg] = useState(0);
   const backgrounds = [bg1, bg2, bg3];

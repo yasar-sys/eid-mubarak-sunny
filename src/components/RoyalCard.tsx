@@ -90,7 +90,7 @@ const RoyalCard = ({ onReveal, cardData }: { onReveal: () => void; cardData: Car
 
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
-  const genderTitle = cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : "Friend";
+  const genderTitle = cardData.gender === "male" ? "Brother" : cardData.gender === "female" ? "Sister" : null;
 
   return (
     <div className="relative py-16 px-4 flex flex-col items-center" style={{ perspective: 1400 }}>
@@ -230,10 +230,11 @@ const RoyalCard = ({ onReveal, cardData }: { onReveal: () => void; cardData: Car
 
             <p className="font-arabic text-2xl md:text-3xl" style={{ color: theme.accent }}> عيد مبارك</p>
 
-            <h2 className="font-display text-2xl md:text-3xl font-semibold" style={{ color: theme.textDark }}>
-              Dear {genderTitle},<br />
-              <span style={{ fontSize: "0.9em" }}>{cardData.receiverName}</span>
-            </h2>
+              <h2 className="font-display text-2xl md:text-3xl font-semibold" style={{ color: theme.textDark }}>
+                {genderTitle ? `Dear ${genderTitle},` : "Dear"}
+                <br />
+                <span style={{ fontSize: "0.9em" }}>{cardData.receiverName}</span>
+              </h2>
 
             <p className="font-body text-base md:text-lg leading-relaxed italic" style={{ color: `${theme.textDark}CC` }}>
               On this blessed Eid, may Allah shower you with prosperity, peace and endless joy.
