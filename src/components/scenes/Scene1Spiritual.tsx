@@ -1,16 +1,53 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import SceneButton from "@/components/SceneButton";
 
+// Import backgrounds to ensure Vite handles them correctly
+import bg1 from "@/assets/spiritual-bg-1.jpg";
+import bg2 from "@/assets/spiritual-bg-2.jpg";
+import bg3 from "@/assets/spiritual-bg-3.jpg";
+import bg4 from "@/assets/spiritual-bg-4.jpg";
+
 const Scene1Spiritual = ({ onNext }: { onNext: () => void }) => {
+  const [currentBg, setCurrentBg] = useState(0);
+  const backgrounds = [bg1, bg2, bg3, bg4];
+
+  useEffect(() => {
+    const bgTimer = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % backgrounds.length);
+    }, 6000);
+    return () => clearInterval(bgTimer);
+  }, []);
+
   return (
     <motion.div
-      className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: "url('/campus-bg.jpg')" }}
+      className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 overflow-hidden bg-black"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
       transition={{ duration: 1.5 }}
     >
+      {/* Cinematic Background Slideshow */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentBg}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 2.5, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <img 
+              src={backgrounds[currentBg]} 
+              className="w-full h-full object-cover" 
+              alt="Eid Celebration Background"
+            />
+          </motion.div>
+        </AnimatePresence>
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] z-10" />
+      </div>
       {/* Cinematic Light Rays */}
       <motion.div
         className="absolute inset-0 pointer-events-none mix-blend-screen overflow-hidden"
@@ -32,9 +69,6 @@ const Scene1Spiritual = ({ onNext }: { onNext: () => void }) => {
         />
       </div>
       
-      {/* Dark cinematic overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-night-deep via-night-deep/60 to-night-deep/30 pointer-events-none" />
-
       {/* Film grain */}
       <div className="absolute inset-0 film-grain pointer-events-none" />
 
