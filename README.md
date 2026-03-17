@@ -59,4 +59,4 @@ Created for MEC CSE Eid Mubarak Project. All rights reserved.
 
 ---
 
-*Made with ✨ by Samin Sunny & Antigravity AI*
+*Made with ✨ by Samin Yasar Sunny*
