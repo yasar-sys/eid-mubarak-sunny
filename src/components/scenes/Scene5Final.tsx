@@ -165,13 +165,13 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
 
       {/* Footer */}
       <motion.div
-        className="absolute bottom-6 left-0 w-full flex flex-col items-center text-center px-4"
+        className="absolute bottom-6 left-0 w-full flex flex-col items-center text-center px-4 z-30"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 5, duration: 2 }}
       >
         <p className="font-cinzel text-[10px] md:text-xs text-foreground/40 tracking-[0.3em] uppercase leading-loose">
-          Designed &amp; Developed by <a href="https://www.linkedin.com/in/samin-yasar-sunny" target="_blank" rel="noopener noreferrer" className="text-gold/70 hover:text-gold-light transition-colors duration-300">Samin Yasar Sunny</a>
+          Designed &amp; Developed by <a href="https://www.linkedin.com/in/samin-yasar-sunny" target="_blank" rel="noopener noreferrer" className="text-gold/70 hover:text-gold-light transition-colors duration-300 pointer-events-auto cursor-pointer">Samin Yasar Sunny</a>
           <br />
           CSE | Mymensingh Engineering College
         </p>
