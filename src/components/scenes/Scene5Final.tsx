@@ -171,7 +171,7 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
         transition={{ delay: 5, duration: 2 }}
       >
         <p className="font-cinzel text-[10px] md:text-xs text-foreground/40 tracking-[0.3em] uppercase leading-loose">
-          Designed &amp; Developed by <span className="text-gold/70">Samin Yasar Sunny</span>
+          Designed &amp; Developed by <a href="https://www.linkedin.com/in/samin-yasar-sunny" target="_blank" rel="noopener noreferrer" className="text-gold/70 hover:text-gold-light transition-colors duration-300">Samin Yasar Sunny</a>
           <br />
           CSE | Mymensingh Engineering College
         </p>
