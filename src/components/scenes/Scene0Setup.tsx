@@ -3,6 +3,8 @@ import { useState } from "react";
 import StarField from "@/components/StarField";
 import FloatingParticles from "@/components/FloatingParticles";
 import QuranAyat from "@/components/QuranAyat";
+import { toast } from "@/components/ui/use-toast";
+import { saveVisitorName } from "@/lib/visitor-submissions";
 
 export type CardTemplate = "royal" | "midnight" | "ivory";
 export type Gender = "male" | "female" | "not-mentioned";
@@ -49,6 +51,7 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
   const [senderName, setSenderName] = useState("");
   const [receiverName, setReceiverName] = useState("");
   const [template, setTemplate] = useState<CardTemplate>("royal");
+  const [isSavingName, setIsSavingName] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
 
   const validateDetails = () => {
@@ -60,8 +63,22 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleNextToTemplate = () => {
-    if (validateDetails()) setStep("template");
+  const handleNextToTemplate = async () => {
+    if (!validateDetails()) return;
+
+    try {
+      setIsSavingName(true);
+      await saveVisitorName(userName);
+      setStep("template");
+    } catch {
+      toast({
+        title: "Couldn't save the name",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingName(false);
+    }
   };
 
   const handleStart = () => {
@@ -176,7 +193,10 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
                   className={inputCls}
                   placeholder="Enter your name"
                   value={userName}
-                  onChange={(e) => { setUserName(e.target.value); setErrors((p) => ({ ...p, userName: "" })); }}
+                  onChange={(e) => {
+                    setUserName(e.target.value);
+                    setErrors((p) => ({ ...p, userName: "" }));
+                  }}
                 />
                 {errors.userName && <p className="text-red-400 text-xs mt-1 font-body">{errors.userName}</p>}
               </div>
@@ -195,7 +215,10 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
                   className={inputCls}
                   placeholder="e.g. Sunny"
                   value={senderName}
-                  onChange={(e) => { setSenderName(e.target.value); setErrors((p) => ({ ...p, senderName: "" })); }}
+                  onChange={(e) => {
+                    setSenderName(e.target.value);
+                    setErrors((p) => ({ ...p, senderName: "" }));
+                  }}
                 />
                 {errors.senderName && <p className="text-red-400 text-xs mt-1 font-body">{errors.senderName}</p>}
               </div>
@@ -207,7 +230,10 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
                   className={inputCls}
                   placeholder="e.g. Family & Friends"
                   value={receiverName}
-                  onChange={(e) => { setReceiverName(e.target.value); setErrors((p) => ({ ...p, receiverName: "" })); }}
+                  onChange={(e) => {
+                    setReceiverName(e.target.value);
+                    setErrors((p) => ({ ...p, receiverName: "" }));
+                  }}
                 />
                 {errors.receiverName && <p className="text-red-400 text-xs mt-1 font-body">{errors.receiverName}</p>}
               </div>
@@ -234,11 +260,12 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
 
               <motion.button
                 onClick={handleNextToTemplate}
-                className="relative w-full py-4 rounded-2xl font-cinzel text-sm tracking-[0.2em] uppercase text-night-deep bg-gradient-to-r from-gold-light via-gold to-[hsl(43,100%,45%)] shadow-lg mt-2 overflow-hidden"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
+                disabled={isSavingName}
+                className="relative mt-2 w-full overflow-hidden rounded-2xl bg-gradient-to-r from-gold-light via-gold to-[hsl(43,100%,45%)] py-4 font-cinzel text-sm uppercase tracking-[0.2em] text-night-deep shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
+                whileHover={isSavingName ? undefined : { scale: 1.02 }}
+                whileTap={isSavingName ? undefined : { scale: 0.97 }}
               >
-                Choose Template →
+                {isSavingName ? "Saving..." : "Choose Template →"}
               </motion.button>
             </div>
           </motion.div>
