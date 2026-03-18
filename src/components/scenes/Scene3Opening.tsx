@@ -30,11 +30,10 @@ const Scene3Opening = ({ onNext, cardData }: { onNext: () => void; cardData: Car
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.8 }}
       >
-        {/* Background Quranic Ayat */}
         <QuranAyat
           arabic="وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ"
           translation="And your Lord says, 'Call upon Me; I will respond to you' (40:60)"
-          className="mb-6 opacity-80"
+          className="mb-6"
           delay={0.8}
         />
         <span className="font-cinzel text-gold-light text-xs tracking-[0.4em] uppercase opacity-60">For You</span>

@@ -77,7 +77,7 @@ const Scene4Celebration = ({ onNext }: { onNext: () => void }) => {
         <QuranAyat
           arabic="وَلِتُكَبِّرُوا اللَّهَ عَلَىٰ مَا هَدَاكُمْ"
           translation="To glorify Allah for that [to] which He has guided you (2:185)"
-          className="mt-20 opacity-60"
+          className="mt-20"
           delay={2}
         />
       </div>

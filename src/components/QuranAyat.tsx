@@ -15,10 +15,10 @@ const QuranAyat = ({ arabic, translation, className = "", delay = 0 }: QuranAyat
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 2 }}
     >
-      <div className="font-arabic text-xl md:text-2xl text-foreground/15 mb-2 tracking-wide text-center">
+      <div className="font-arabic text-2xl md:text-3xl text-gold mb-2 tracking-wide text-center drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]">
         {arabic}
       </div>
-      <div className="font-cinzel text-[8px] md:text-[10px] text-foreground/10 uppercase tracking-[0.2em] text-center max-w-[250px]">
+      <div className="font-cinzel text-[10px] md:text-xs text-foreground/80 uppercase tracking-[0.2em] text-center max-w-[300px]">
         {translation}
       </div>
     </motion.div>

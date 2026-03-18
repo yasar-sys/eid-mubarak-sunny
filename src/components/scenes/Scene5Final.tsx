@@ -105,11 +105,10 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
       <div className="absolute inset-0 film-grain pointer-events-none" />
 
       <div className="relative z-20 w-full flex flex-col items-center">
-        {/* Background Quranic Ayat */}
         <QuranAyat
           arabic="اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ"
           translation="Allah is the Light of the heavens and the earth (24:35)"
-          className="mb-8 opacity-60"
+          className="mb-8"
           delay={1}
         />
 

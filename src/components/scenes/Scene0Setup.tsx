@@ -326,7 +326,7 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
       <QuranAyat
         arabic="وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ"
         translation="He is with you wherever you are (57:4)"
-        className="absolute bottom-10 left-0 w-full z-0"
+        className="absolute bottom-10 left-0 w-full z-20"
         delay={1.5}
       />
     </motion.div>
