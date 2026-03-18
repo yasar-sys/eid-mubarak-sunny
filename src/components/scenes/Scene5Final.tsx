@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import ShareModal from "@/components/ShareModal";
 import { CardData } from "@/components/scenes/Scene0Setup";
+import QuranAyat from "@/components/QuranAyat";
 
 // Import backgrounds to ensure Vite handles them correctly
 import bg1 from "@/assets/eid-bg-1.jpg";
@@ -103,13 +104,22 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
 
       <div className="absolute inset-0 film-grain pointer-events-none" />
 
-      {/* Glassmorphism Card */}
-      <motion.div
-        className="relative z-20 w-full max-w-2xl glass-strong rounded-3xl glass-glow p-8 md:p-16 flex flex-col items-center text-center overflow-hidden"
-        initial={{ y: 40, opacity: 0, scale: 0.95 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <div className="relative z-20 w-full flex flex-col items-center">
+        {/* Background Quranic Ayat */}
+        <QuranAyat
+          arabic="اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ"
+          translation="Allah is the Light of the heavens and the earth (24:35)"
+          className="mb-8 opacity-60"
+          delay={1}
+        />
+
+        {/* Glassmorphism Card */}
+        <motion.div
+          className="w-full max-w-2xl glass-strong rounded-3xl glass-glow p-8 md:p-16 flex flex-col items-center text-center overflow-hidden"
+          initial={{ y: 40, opacity: 0, scale: 0.95 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        >
         {/* Inner glow at top */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-32 bg-gradient-to-b from-gold/[0.06] to-transparent pointer-events-none" />
@@ -160,6 +170,7 @@ const Scene5Final = ({ cardData }: { cardData: CardData }) => {
           </button>
         </motion.div>
       </motion.div>
+    </div>
 
       <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)} />
 

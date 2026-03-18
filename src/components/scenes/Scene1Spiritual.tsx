@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import SceneButton from "@/components/SceneButton";
+import QuranAyat from "@/components/QuranAyat";
 
 // Import backgrounds to ensure Vite handles them correctly
 import bg1 from "@/assets/spiritual-bg-1.jpg";
@@ -74,6 +75,14 @@ const Scene1Spiritual = ({ onNext }: { onNext: () => void }) => {
       <div className="absolute inset-0 film-grain pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center max-w-4xl text-center">
+        {/* Background Quranic Ayat */}
+        <QuranAyat
+          arabic="سَلَامٌ هِيَ حَتَّىٰ مَطْلَعِ الْفَجْرِ"
+          translation="Peace it is until the emergence of dawn (97:5)"
+          className="mb-8"
+          delay={1}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

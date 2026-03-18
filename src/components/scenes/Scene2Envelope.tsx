@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import InteractiveEnvelope from "@/components/InteractiveEnvelope";
+import QuranAyat from "@/components/QuranAyat";
 
 const Scene2Envelope = ({ onNext }: { onNext: () => void }) => {
   return (
@@ -20,6 +21,14 @@ const Scene2Envelope = ({ onNext }: { onNext: () => void }) => {
       <div className="absolute inset-0 film-grain pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl">
+        {/* Background Quranic Ayat */}
+        <QuranAyat
+          arabic="فَبِأَيِّ آلَاء رَبِّكُمَا تُكَذِّبَانِ"
+          translation="Which is it, of the favors of your Lord, that ye deny? (55:13)"
+          className="mb-12"
+          delay={0.5}
+        />
+
         {/* Radial glow behind envelope */}
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full pointer-events-none"

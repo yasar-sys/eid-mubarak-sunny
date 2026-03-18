@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import StarField from "@/components/StarField";
 import RoyalCard from "@/components/RoyalCard";
 import { CardData } from "@/components/scenes/Scene0Setup";
+import QuranAyat from "@/components/QuranAyat";
 
 const Scene3Opening = ({ onNext, cardData }: { onNext: () => void; cardData: CardData }) => {
   const [isRevealed, setIsRevealed] = useState(false);
@@ -24,11 +25,18 @@ const Scene3Opening = ({ onNext, cardData }: { onNext: () => void; cardData: Car
       </div>
 
       <motion.div
-        className="relative z-20 text-center mb-12"
+        className="relative z-20 text-center mb-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.8 }}
       >
+        {/* Background Quranic Ayat */}
+        <QuranAyat
+          arabic="وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ"
+          translation="And your Lord says, 'Call upon Me; I will respond to you' (40:60)"
+          className="mb-6 opacity-80"
+          delay={0.8}
+        />
         <span className="font-cinzel text-gold-light text-xs tracking-[0.4em] uppercase opacity-60">For You</span>
         <h2 className="font-display text-4xl md:text-5xl text-foreground mt-2">
           {cardData.receiverName}'s <span className="text-gold text-glow-gold">Gift</span>

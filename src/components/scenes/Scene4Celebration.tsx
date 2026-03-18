@@ -3,6 +3,7 @@ import { useState } from "react";
 import SceneButton from "@/components/SceneButton";
 import StarField from "@/components/StarField";
 import FloatingParticles from "@/components/FloatingParticles";
+import QuranAyat from "@/components/QuranAyat";
 
 const Scene4Celebration = ({ onNext }: { onNext: () => void }) => {
   const [fireworks, setFireworks] = useState<{ id: number; x: number; y: number; particles: { angle: number; distance: number; color: string; size: number }[] }[]>([]);
@@ -71,6 +72,14 @@ const Scene4Celebration = ({ onNext }: { onNext: () => void }) => {
             Read the Greeting ✦
           </SceneButton>
         </div>
+
+        {/* Background Quranic Ayat */}
+        <QuranAyat
+          arabic="وَلِتُكَبِّرُوا اللَّهَ عَلَىٰ مَا هَدَاكُمْ"
+          translation="To glorify Allah for that [to] which He has guided you (2:185)"
+          className="mt-20 opacity-60"
+          delay={2}
+        />
       </div>
 
       {/* Mosque Background */}

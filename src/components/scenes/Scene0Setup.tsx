@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import StarField from "@/components/StarField";
 import FloatingParticles from "@/components/FloatingParticles";
+import QuranAyat from "@/components/QuranAyat";
 
 export type CardTemplate = "royal" | "midnight" | "ivory";
 export type Gender = "male" | "female" | "not-mentioned";
@@ -320,6 +321,14 @@ const Scene0Setup = ({ onStart }: { onStart: (data: CardData) => void }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Background Quranic Ayat */}
+      <QuranAyat
+        arabic="وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ"
+        translation="He is with you wherever you are (57:4)"
+        className="absolute bottom-10 left-0 w-full z-0"
+        delay={1.5}
+      />
     </motion.div>
   );
 };
